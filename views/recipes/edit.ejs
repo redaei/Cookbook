@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Recipe</title>
+  </head>
+  <body>
+    <%- include('../partials/_navbar.ejs') %>
+    <h1>Edit <%= recipe.name %> Recipe</h1>
+    <form action="/recipes/<%= recipe._id %>?_method=PUT" method="POST">
+      <label for="name">Name:</label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        value="<%= recipe.name %>"
+      /><br />
+      <label for="instructions">Instructions:</label>
+      <input
+        type="text"
+        name="instructions"
+        id="instructions"
+        value="<%= recipe.instructions %>"
+      /><br />
+      <!--  -->
+      <label for="ingredients">Ingredients:</label>
+      <select name="ingredients" id="ingredients" multiple>
+        <% ingredients.forEach((ingredient) => { %> <% if
+        (recipe.ingredients.includes(ingredient._id)) { %>
+        <option value="<%= ingredient._id %>" selected>
+          <%= ingredient.name %>
+        </option>
+        <% } else { %>
+        <option value="<%= ingredient._id %>"><%= ingredient.name %></option>
+        <% }}) %>
+      </select>
+      <p>
+        Hold down the control (ctrl/command) button to select multiple options
+      </p>
+      <!--  -->
+      <br />
+      <button type="submit">Save Recipe</button>
+    </form>
+  </body>
+</html>

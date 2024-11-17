@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Ingredient</title>
+  </head>
+  <body>
+    <%- include('../partials/_navbar.ejs') %>
+    <h1>Edit <%= ingredient.name %> Ingredient</h1>
+    <form action="/ingredients/<%= ingredient._id %>?_method=PUT" method="POST">
+      <label for="name">Name:</label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        value="<%= ingredient.name %>"
+      /><br />
+
+      <button type="submit">Save Ingredient</button>
+    </form>
+  </body>
+</html>

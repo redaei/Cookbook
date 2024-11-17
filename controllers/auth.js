@@ -1,19 +1,19 @@
 const User = require('../models/user.js')
-
+const Recipe = require('../models/recipe.js')
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const isSignedIn = require('../middleware/is-signed-in.js')
 
-router.get('/', async (req, res) => {
-  res.render('index.ejs')
-})
+// router.get('/', async (req, res) => {
+//   res.render('home.ejs')
+// })
 
-router.get('/auth/sign-up', (req, res) => {
+router.get('/sign-up', (req, res) => {
   res.render('auth/sign-up.ejs')
 })
 
-router.post('/auth/sign-up', async (req, res) => {
+router.post('/sign-up', async (req, res) => {
   const userInDB = await User.findOne({ username: req.body.username })
 
   if (userInDB) {
@@ -30,11 +30,11 @@ router.post('/auth/sign-up', async (req, res) => {
   res.send(`Thanks for signing up ${user.username}`)
 })
 
-router.get('/auth/sign-in', (req, res) => {
+router.get('/sign-in', (req, res) => {
   res.render('auth/sign-in.ejs')
 })
 
-router.post('/auth/sign-in', async (req, res) => {
+router.post('/sign-in', async (req, res) => {
   try {
     const userInDatabase = await User.findOne({ username: req.body.username })
     if (!userInDatabase) {
@@ -54,20 +54,38 @@ router.post('/auth/sign-in', async (req, res) => {
       _id: userInDatabase._id
     }
 
-    res.redirect('/')
+    res.redirect('/recipes')
   } catch (err) {
     console.log(err)
     res.send('error')
   }
 })
 
-router.get('/auth/sign-out', (req, res) => {
+router.get('/sign-out', (req, res) => {
   req.session.destroy()
   res.redirect('/')
 })
 
-router.get('/vip-lounge', isSignedIn, (req, res) => {
-  res.send(`Welcome to the party ${req.session.user.username}.`)
+router.get('/users', async (req, res) => {
+  try {
+    const users = await User.find({})
+
+    res.render('auth/index.ejs', { users })
+  } catch (error) {
+    console.log(error)
+    res.redirect('/')
+  }
+})
+
+router.get('/users/:userId', async (req, res) => {
+  try {
+    const recipes = await Recipe.find({ owner: req.params.userId })
+
+    res.render('recipes/index.ejs', { recipes })
+  } catch (error) {
+    console.log(error)
+    res.redirect('/')
+  }
 })
 
 module.exports = router

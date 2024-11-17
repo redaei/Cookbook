@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= ingredient.name %></title>
+  </head>
+  <body>
+    <%- include('../partials/_navbar.ejs') %>
+    <h1><%= ingredient.name %></h1>
+    <% if( typeof message !== 'undefined' ){ %>
+    <div><p><%= message %></p></div>
+    <% } %>
+    <form
+      action="/ingredients/<%= ingredient._id %>?_method=DELETE"
+      method="POST"
+    >
+      <button type="submit">Delete this ingredient</button>
+    </form>
+    <a href="/ingredients/<%= ingredient._id %>/edit">Edit this ingredient</a>
+  </body>
+</html>
